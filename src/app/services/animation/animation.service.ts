@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 export class AnimationService {
 
     frameCount = 0;
-    fps: number = 60;
+    fps: number = 144;
     fpsInterval: number;
     currentFps: number;
     startTime: number;

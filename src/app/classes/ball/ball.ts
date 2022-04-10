@@ -49,7 +49,6 @@ export class Ball extends Shape {
             const s2 = side === sidesPath.length - 1 ? 0 : side + 1;
             this.setCoords(sidesPath[s1], sidesPath[s2], sidesPath.length, frames);
         };
-        console.log('animationPath length', this.animationPath.length);
     }
 
     private setCoords(p1: ICoordinates, p2: ICoordinates, sides: number, frames: number): void {

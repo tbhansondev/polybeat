@@ -1,20 +1,26 @@
 <canvas #canvas id="tutorial" width="600" height="400"></canvas>
 <p>
-    <label for="number-of-sides">
+    <label for="number-of-sides-left">
         Number of sides (left)
     </label>
-    <input id="number-of-sides" type="number" [(ngModel)]="sidesLeft" (input)="startAnimation()">
+    <input id="number-of-sides-left" type="number" [(ngModel)]="sidesLeft" (input)="startAnimation()">
     <button (click)="focusTrack(TRACK_ID.Left)">Focus left</button>
 </p>
 <p>
-    <label for="number-of-sides">
+    <label for="number-of-sides-right">
         Number of sides (right)
     </label>
-    <input id="number-of-sides" type="number" [(ngModel)]="sidesRight" (input)="startAnimation()">
+    <input id="number-of-sides-right" type="number" [(ngModel)]="sidesRight" (input)="startAnimation()">
     <button (click)="focusTrack(TRACK_ID.Right)">Focus right</button>
 </p>
 <p>
     <button (click)="focusTrack()">Reset focus</button>
+</p>
+<p>
+    <label for="select-bpm">
+        BPM
+    </label>
+    <input id="select-bpm" type="number" [(ngModel)]="bpm" (input)="startAnimation()">
 </p>
 <p>
     fps: {{ animationService.currentFps }}

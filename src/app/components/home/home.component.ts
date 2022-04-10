@@ -21,8 +21,9 @@ export class HomeComponent implements AfterViewInit {
     sidesLeft = 4;
     sidesRight = 3;
 
-    speed = 300 // lower number = higher speed;
-    frames: number;
+    bpm = 90;
+    quarterNotesPerBar = 4;
+    framesPerBar: number;
     
     circle: Circle;
 
@@ -70,10 +71,8 @@ export class HomeComponent implements AfterViewInit {
     }
 
     startAnimation(): void {
-        // window.cancelAnimationFrame(this.raf);
         this.animationService.stop();
-
-        this.setFrames();
+        this.setFramesPerBar();
         this.createShapes();
         this.refreshCanvas();
     }
@@ -90,9 +89,9 @@ export class HomeComponent implements AfterViewInit {
     
     createShapes(): void {
         this.polyLeft.createPath(this.sidesLeft);
-        this.ballLeft.createAnimationPath(this.polyLeft.path, this.frames);
+        this.ballLeft.createAnimationPath(this.polyLeft.path, this.framesPerBar);
         this.polyRight.createPath(this.sidesRight);
-        this.ballRight.createAnimationPath(this.polyRight.path, this.frames);
+        this.ballRight.createAnimationPath(this.polyRight.path, this.framesPerBar);
     }
 
     drawShapes(): void {
@@ -103,8 +102,13 @@ export class HomeComponent implements AfterViewInit {
         this.ballRight.draw();
     }
 
-    setFrames(): void {
-        this.frames = this.mathService.closestCommonMultipleToTarget(this.sidesLeft, this.sidesRight, this.speed);
+    setFramesPerBar(): void {
+        const fpm = this.animationService.fps * 60;
+        this.framesPerBar = this.mathService.closestCommonMultipleToTarget(
+            this.sidesLeft,
+            this.sidesRight,
+            Math.round(fpm / (this.bpm / this.quarterNotesPerBar))
+        );
     }
 
     focusTrack(trackId?: TrackId): void {
