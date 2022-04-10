@@ -2,6 +2,7 @@ import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { Ball } from 'src/app/classes/ball/ball';
 import { Circle } from 'src/app/classes/circle/circle';
 import { Polygon } from 'src/app/classes/polygon/polygon';
+import { TrackId } from 'src/app/enums/track-id/track-id';
 import { MathService } from 'src/app/services/math/math.service';
 
 @Component({
@@ -19,6 +20,7 @@ export class HomeComponent implements AfterViewInit {
     sidesLeft = 4;
     sidesRight = 3;
 
+    speed = 300;
     frames: number;
     
     circle: Circle;
@@ -29,8 +31,10 @@ export class HomeComponent implements AfterViewInit {
     ballLeft: Ball;
     ballRight: Ball;
 
-    colorLeft = 'red';
-    colorRight = 'blue';
+    colorLeft = 'rgba(200, 0, 0, 1)';
+    colorLeftMute = 'rgba(200, 0, 0, .2)'
+    colorRight = 'rgba(0, 0, 200, 1)';
+    colorRightMute = 'rgba(0, 0, 200, .2)';
 
     r = 100;
     x = 125;
@@ -38,6 +42,8 @@ export class HomeComponent implements AfterViewInit {
     rBall = 10;
 
     @ViewChild('canvas', { static: false }) canvasElement: ElementRef<HTMLCanvasElement>;
+
+    readonly TRACK_ID = TrackId;
 
     constructor(private mathService: MathService) {}
 
@@ -94,6 +100,18 @@ export class HomeComponent implements AfterViewInit {
     }
 
     setFrames(): void {
-        this.frames = this.mathService.closestCommonMultipleToTarget(this.sidesLeft, this.sidesRight, 500);
+        this.frames = this.mathService.closestCommonMultipleToTarget(this.sidesLeft, this.sidesRight, this.speed);
+    }
+
+    focusTrack(trackId?: TrackId): void {
+        const colorLeft = trackId && trackId !== TrackId.Left ? this.colorLeftMute : this.colorLeft;
+        const colorRight = trackId && trackId !== TrackId.Right ? this.colorRightMute : this.colorRight;
+        this.updateColor(this.polyLeft, this.ballLeft, colorLeft);
+        this.updateColor(this.polyRight, this.ballRight, colorRight);
+    }
+
+    private updateColor(shape: Polygon, ball: Ball, color: string) {
+        shape.updateColor(color);
+        ball.updateColor(color);
     }
 }

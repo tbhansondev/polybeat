@@ -18,4 +18,8 @@ export class Shape {
         this.ctx.translate(this.x, this.y);
         this.ctx.rotate(-90 * Math.PI / 180);
     }
+
+    updateColor(color: string): void {
+        this.color = color;
+    }
 }

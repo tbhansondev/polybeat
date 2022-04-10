@@ -3,7 +3,10 @@
     Number of sides (left)
 </label>
 <input id="number-of-sides" type="number" [(ngModel)]="sidesLeft" (input)="startAnimation()">
+<button (click)="focusTrack(TRACK_ID.Left)">Focus left</button>
 <label for="number-of-sides">
     Number of sides (right)
 </label>
 <input id="number-of-sides" type="number" [(ngModel)]="sidesRight" (input)="startAnimation()">
+<button (click)="focusTrack(TRACK_ID.Right)">Focus right</button>
+<button (click)="focusTrack()">Reset focus</button>
