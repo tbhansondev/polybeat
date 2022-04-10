@@ -11,11 +11,11 @@ export class Polygon extends Shape {
     draw(): void {
         this.setTransform();
         this.ctx.beginPath();
-        this.ctx.translate(this.x, this.y);
-        this.ctx.moveTo(this.r, 0);
+        // this.ctx.moveTo(this.r, 0);
         this.path.forEach((coords) => {
             this.ctx.lineTo(coords.x, coords.y);
         });
+        this.ctx.closePath();
         this.ctx.strokeStyle = this.color;
         this.ctx.stroke();
     }
@@ -29,5 +29,8 @@ export class Polygon extends Shape {
                 y: this.r * Math.sin(i * a),
             });
         }
+        this.path.unshift(this.path[this.path.length - 1]);
+        this.path.splice(this.path.length - 1, 1);
+        console.log(this.path);
     }
 }

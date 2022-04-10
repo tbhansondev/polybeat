@@ -9,7 +9,7 @@ export class Circle extends Shape {
     draw(): void {
         this.setTransform();
         this.ctx.beginPath();
-        this.ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+        this.ctx.arc(0, 0, this.r, 0, Math.PI * 2);
         this.ctx.strokeStyle = this.color;
         this.ctx.stroke();
     }

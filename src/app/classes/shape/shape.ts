@@ -14,6 +14,9 @@ export class Shape {
     }
 
     setTransform(): void {
+        // console.log('x', this.x, 'y', this.y);
         this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+        this.ctx.translate(this.x, this.y);
+        this.ctx.rotate(-90 * Math.PI / 180);
     }
 }

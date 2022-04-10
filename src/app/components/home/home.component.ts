@@ -53,13 +53,20 @@ export class HomeComponent implements AfterViewInit {
                     this.ballLeft = new Ball(this.x, this.y, this.r, this.rBall, this.colorLeft, this.ctx);
                     this.polyRight = new Polygon(this.x, this.y, this.r, this.colorRight, this.ctx);
                     this.ballRight = new Ball(this.x, this.y, this.r, this.rBall, this.colorRight, this.ctx);
-                    this.createShapes();
+                    this.startAnimation();
                 }
             }
             else {
                 console.warn('browser does not support canvas');
             }
         }
+    }
+
+    startAnimation(): void {
+        window.cancelAnimationFrame(this.raf);
+        this.setSpeed();
+        this.createShapes();
+        this.refreshCanvas();
     }
 
     refreshCanvas(): void {
@@ -72,13 +79,10 @@ export class HomeComponent implements AfterViewInit {
     }
     
     createShapes(): void {
-        window.cancelAnimationFrame(this.raf);
-        this.setSpeed();
         this.polyLeft.createPath(this.sidesLeft);
         this.ballLeft.createAnimationPath(this.polyLeft.path, this.speed);
         this.polyRight.createPath(this.sidesRight);
         this.ballRight.createAnimationPath(this.polyRight.path, this.speed);
-        this.refreshCanvas();
     }
 
     drawShapes(): void {
