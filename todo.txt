@@ -1,0 +1,3 @@
+- focus left / right
+- stereo / mono
+- touch interface
