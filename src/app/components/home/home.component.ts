@@ -3,6 +3,7 @@ import { Ball } from 'src/app/classes/ball/ball';
 import { Circle } from 'src/app/classes/circle/circle';
 import { Polygon } from 'src/app/classes/polygon/polygon';
 import { TrackId } from 'src/app/enums/track-id/track-id';
+import { AnimationService } from 'src/app/services/animation/animation.service';
 import { MathService } from 'src/app/services/math/math.service';
 
 @Component({
@@ -20,7 +21,7 @@ export class HomeComponent implements AfterViewInit {
     sidesLeft = 4;
     sidesRight = 3;
 
-    speed = 300;
+    speed = 300 // lower number = higher speed;
     frames: number;
     
     circle: Circle;
@@ -45,7 +46,7 @@ export class HomeComponent implements AfterViewInit {
 
     readonly TRACK_ID = TrackId;
 
-    constructor(private mathService: MathService) {}
+    constructor(public animationService: AnimationService, private mathService: MathService) {}
 
     ngAfterViewInit(): void {
         if (this.canvasElement?.nativeElement) {
@@ -69,7 +70,9 @@ export class HomeComponent implements AfterViewInit {
     }
 
     startAnimation(): void {
-        window.cancelAnimationFrame(this.raf);
+        // window.cancelAnimationFrame(this.raf);
+        this.animationService.stop();
+
         this.setFrames();
         this.createShapes();
         this.refreshCanvas();
@@ -77,10 +80,11 @@ export class HomeComponent implements AfterViewInit {
 
     refreshCanvas(): void {
         if (this.ctx) {
-            this.ctx.setTransform(1, 0, 0, 1, 0, 0);
-            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            this.drawShapes();
-            this.raf = window.requestAnimationFrame(this.refreshCanvas.bind(this));
+            this.animationService.start(() => {
+                this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                this.drawShapes();
+            });
         }
     }
     
