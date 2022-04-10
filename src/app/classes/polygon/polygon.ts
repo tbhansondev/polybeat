@@ -11,7 +11,6 @@ export class Polygon extends Shape {
     draw(): void {
         this.setTransform();
         this.ctx.beginPath();
-        // this.ctx.moveTo(this.r, 0);
         this.path.forEach((coords) => {
             this.ctx.lineTo(coords.x, coords.y);
         });
@@ -31,6 +30,5 @@ export class Polygon extends Shape {
         }
         this.path.unshift(this.path[this.path.length - 1]);
         this.path.splice(this.path.length - 1, 1);
-        console.log(this.path);
     }
 }

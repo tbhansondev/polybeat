@@ -19,7 +19,7 @@ export class HomeComponent implements AfterViewInit {
     sidesLeft = 4;
     sidesRight = 3;
 
-    speed: number;
+    frames: number;
     
     circle: Circle;
 
@@ -64,7 +64,7 @@ export class HomeComponent implements AfterViewInit {
 
     startAnimation(): void {
         window.cancelAnimationFrame(this.raf);
-        this.setSpeed();
+        this.setFrames();
         this.createShapes();
         this.refreshCanvas();
     }
@@ -80,9 +80,9 @@ export class HomeComponent implements AfterViewInit {
     
     createShapes(): void {
         this.polyLeft.createPath(this.sidesLeft);
-        this.ballLeft.createAnimationPath(this.polyLeft.path, this.speed);
+        this.ballLeft.createAnimationPath(this.polyLeft.path, this.frames);
         this.polyRight.createPath(this.sidesRight);
-        this.ballRight.createAnimationPath(this.polyRight.path, this.speed);
+        this.ballRight.createAnimationPath(this.polyRight.path, this.frames);
     }
 
     drawShapes(): void {
@@ -93,8 +93,7 @@ export class HomeComponent implements AfterViewInit {
         this.ballRight.draw();
     }
 
-    setSpeed(): void {
-        this.speed = this.mathService.lowestCommonMultiple(this.sidesLeft, this.sidesRight);
-        console.log(this.speed);
+    setFrames(): void {
+        this.frames = this.mathService.closestCommonMultipleToTarget(this.sidesLeft, this.sidesRight, 500);
     }
 }

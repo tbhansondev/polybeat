@@ -21,4 +21,22 @@ export class MathService {
         }
         return x;
     }
+
+    closestCommonMultipleToTarget(x: number, y: number, target: number): number {
+        let m = 0;
+        let i = 0;
+        while(!m) {
+            m = checkRemainders(target - i)
+              ? target - i
+              : checkRemainders(target + i)
+              ? target + i
+              : 0;
+            i++;
+        }
+        return m;
+
+        function checkRemainders(t: number): boolean {
+            return !(t % x) && !(t % y);
+        }
+    }
 }
