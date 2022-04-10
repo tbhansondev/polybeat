@@ -5,7 +5,7 @@ export class Ball extends Shape {
     private rBall: number;
     private initialX: number;
     private initialY: number;
-    public path: ICoordinates[];
+    public animationPath: ICoordinates[];
 
     private points = 480 // find a multiple common to the two numbers of sides;
     private coordIndex = -1;
@@ -18,7 +18,7 @@ export class Ball extends Shape {
     }
 
     draw(): void {
-        this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+        this.setTransform();
         this.ctx.translate(this.initialX, this.initialY);
         this.updatePosition();
         this.ctx.beginPath();
@@ -31,17 +31,12 @@ export class Ball extends Shape {
     updatePosition(): void {
         this.coordIndex =
           this.coordIndex < 0
-            ? this.path.length - 1
-            : this.coordIndex + 1 === this.path.length
+            ? this.animationPath.length - 1
+            : this.coordIndex + 1 === this.animationPath.length
             ? 0
             : this.coordIndex + 1;
-        // console.log('coordindex', this.coordIndex);
-        // console.log(this.coordIndex);
-        // console.log(this.path.length);
-        // console.log(this.x, this.y);
-        this.x = this.path[this.coordIndex].x;
-        this.y = this.path[this.coordIndex].y;
-        // console.log(this.x, this.y);
+        this.x = this.animationPath[this.coordIndex].x;
+        this.y = this.animationPath[this.coordIndex].y;
     }
 
     resetPosition(): void {
@@ -50,34 +45,29 @@ export class Ball extends Shape {
         this.y = this.initialY;
     }
 
-    createPath(path: ICoordinates[], sides: number): void {
-        this.path = [];
+    createAnimationPath(sidesPath: ICoordinates[], speed: number): void {
+        this.animationPath = [];
         this.resetPosition();
-        for(let side = 0; side < path.length; side++) {
+        for(let side = 0; side < sidesPath.length; side++) {
             const s1 = side;
-            const s2 = side === path.length - 1 ? 0 : side + 1;
-            // console.log('s1', s1, path[s1], 's2', s2, path[s2]);
-            this.setCoords(path[s1], path[s2], sides);
+            const s2 = side === sidesPath.length - 1 ? 0 : side + 1;
+            this.setCoords(sidesPath[s1], sidesPath[s2], sidesPath.length);
         };
-        //console.log('path', path);
-        // console.log('this.path', this.path);
     }
 
-    setCoords(start: ICoordinates, end: ICoordinates, sides: number): void {
+    private setCoords(start: ICoordinates, end: ICoordinates, sides: number): void {
         const p1 = start;
         const p2 = end;
-        // console.log('p1', p1, 'p2', p2);
         const dx = p2.x - p1.x;
         const dy = p2.y - p1.y;
         const distance = Math.sqrt((dx * dx) + (dy * dy));
         const moves = this.points / sides;
-        console.log('sides', sides, 'moves', moves, 'moves per side', moves / sides);
+        console.log('sides', sides, 'moves', moves, 'total moves', moves * sides);
         const xunits = (p2.x - p1.x) / moves;
         const yunits = (p2.y - p1.y) / moves;
-        // this.path.push(start);
-        const pathLen = this.path.length;
+        const pathLen = this.animationPath.length;
         for (let i = pathLen; i <= pathLen + moves; i++){
-            const previousPoint = this.path[i - 1] || null;
+            const previousPoint = this.animationPath[i - 1] || null;
             let x: number;
             let y: number;
             if (previousPoint) {
@@ -88,7 +78,7 @@ export class Ball extends Shape {
                 x = p1.x;
                 y = p1.y;
             }
-            this.path.push({x,y});
+            this.animationPath.push({x,y});
         }
     }
 }

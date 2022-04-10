@@ -1,6 +1,8 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { Ball } from 'src/app/classes/ball/ball';
+import { Circle } from 'src/app/classes/circle/circle';
 import { Polygon } from 'src/app/classes/polygon/polygon';
+import { MathService } from 'src/app/services/math/math.service';
 
 @Component({
     selector: 'app-home',
@@ -16,6 +18,10 @@ export class HomeComponent implements AfterViewInit {
 
     sidesLeft = 4;
     sidesRight = 3;
+
+    speed: number;
+    
+    circle: Circle;
 
     polyLeft: Polygon;
     polyRight: Polygon;
@@ -33,6 +39,8 @@ export class HomeComponent implements AfterViewInit {
 
     @ViewChild('canvas', { static: false }) canvasElement: ElementRef<HTMLCanvasElement>;
 
+    constructor(private mathService: MathService) {}
+
     ngAfterViewInit(): void {
         if (this.canvasElement?.nativeElement) {
             this.canvas = this.canvasElement.nativeElement;
@@ -40,11 +48,12 @@ export class HomeComponent implements AfterViewInit {
                 this.context = this.canvas.getContext('2d');
                 if (this.context) {
                     this.ctx = this.context;
+                    this.circle = new Circle(this.x, this.y, this.r, 'gray', this.ctx);
                     this.polyLeft = new Polygon(this.x, this.y, this.r, this.colorLeft, this.ctx);
                     this.ballLeft = new Ball(this.x, this.y, this.r, this.rBall, this.colorLeft, this.ctx);
                     this.polyRight = new Polygon(this.x, this.y, this.r, this.colorRight, this.ctx);
                     this.ballRight = new Ball(this.x, this.y, this.r, this.rBall, this.colorRight, this.ctx);
-                    this.refreshCanvas();
+                    this.createShapes();
                 }
             }
             else {
@@ -53,34 +62,35 @@ export class HomeComponent implements AfterViewInit {
         }
     }
 
-    refreshCanvas(refreshShapes?: boolean): void {
+    refreshCanvas(): void {
         if (this.ctx) {
             this.ctx.setTransform(1, 0, 0, 1, 0, 0);
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-            this.drawShapes(refreshShapes);
-            this.raf = window.requestAnimationFrame(this.refreshCanvas.bind(this, false));
+            this.drawShapes();
+            this.raf = window.requestAnimationFrame(this.refreshCanvas.bind(this));
         }
     }
+    
+    createShapes(): void {
+        window.cancelAnimationFrame(this.raf);
+        this.setSpeed();
+        this.polyLeft.createPath(this.sidesLeft);
+        this.ballLeft.createAnimationPath(this.polyLeft.path, this.speed);
+        this.polyRight.createPath(this.sidesRight);
+        this.ballRight.createAnimationPath(this.polyRight.path, this.speed);
+        this.refreshCanvas();
+    }
 
-    drawShapes(refreshShapes?: boolean): void {
-        if (refreshShapes) {
-            window.cancelAnimationFrame(this.raf);
-        }
-        this.polyLeft.draw(this.sidesLeft);
-        if (refreshShapes || !this.ballLeft.path) {
-            this.ballLeft.createPath(this.polyLeft.path, this.sidesLeft);
-        }
+    drawShapes(): void {
+        this.circle.draw();
+        this.polyLeft.draw();
         this.ballLeft.draw();
-        this.polyRight.draw(this.sidesRight);
-        if (refreshShapes || !this.ballRight.path) {
-            this.ballRight.createPath(this.polyRight.path, this.sidesRight);
-        }
+        this.polyRight.draw();
         this.ballRight.draw();
     }
 
-    startAnimation(): void {
-        this.ballLeft.resetPosition();
-        // this.raf = window.requestAnimationFrame(this.refreshCanvas.bind(this));
+    setSpeed(): void {
+        this.speed = this.mathService.lowestCommonMultiple(this.sidesLeft, this.sidesRight);
+        console.log(this.speed);
     }
 }

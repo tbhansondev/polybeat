@@ -2,9 +2,8 @@
 <label for="number-of-sides">
     Number of sides (left)
 </label>
-<input id="number-of-sides" type="number" [(ngModel)]="sidesLeft" (input)="refreshCanvas(true)">
+<input id="number-of-sides" type="number" [(ngModel)]="sidesLeft" (input)="createShapes()">
 <label for="number-of-sides">
     Number of sides (right)
 </label>
-<input id="number-of-sides" type="number" [(ngModel)]="sidesRight" (input)="refreshCanvas(true)">
-<button (click)="startAnimation()">Start Animation</button>
+<input id="number-of-sides" type="number" [(ngModel)]="sidesRight" (input)="createShapes()">

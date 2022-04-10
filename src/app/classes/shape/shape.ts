@@ -12,4 +12,8 @@ export class Shape {
         this.color = color;
         this.ctx = ctx;
     }
+
+    setTransform(): void {
+        this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+    }
 }
