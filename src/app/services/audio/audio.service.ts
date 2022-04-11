@@ -23,6 +23,11 @@ export class AudioService {
 
     private pan = .5;
 
+    resumeContext(): void {
+        this.contextLeft.resume();
+        this.contextRight.resume();
+    }
+
     setStereo(): void {
         this.setPanning(this.pan);
     }
