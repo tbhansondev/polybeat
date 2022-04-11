@@ -11,7 +11,7 @@ export class AudioService {
     get muted(): boolean {
         return this._muted;
     }
-    _muted: boolean;
+    private _muted: boolean;
 
     private contextLeft = new AudioContext();
     private sourceLeft = this.contextLeft.createMediaElementSource(this.dingalingLeft);
