@@ -4,6 +4,7 @@ import { Circle } from 'src/app/classes/circle/circle';
 import { Polygon } from 'src/app/classes/polygon/polygon';
 import { TrackId } from 'src/app/enums/track-id/track-id';
 import { AnimationService } from 'src/app/services/animation/animation.service';
+import { AudioService } from 'src/app/services/audio/audio.service';
 import { MathService } from 'src/app/services/math/math.service';
 
 @Component({
@@ -47,7 +48,7 @@ export class HomeComponent implements AfterViewInit {
 
     readonly TRACK_ID = TrackId;
 
-    constructor(public animationService: AnimationService, private mathService: MathService) {}
+    constructor(private animationService: AnimationService, public audioService: AudioService, private mathService: MathService) {}
 
     ngAfterViewInit(): void {
         if (this.canvasElement?.nativeElement) {
@@ -58,9 +59,10 @@ export class HomeComponent implements AfterViewInit {
                     this.ctx = this.context;
                     this.circle = new Circle(this.x, this.y, this.r, 'gray', this.ctx);
                     this.polyLeft = new Polygon(this.x, this.y, this.r, this.colorLeft, this.ctx);
-                    this.ballLeft = new Ball(this.x, this.y, this.r, this.rBall, this.colorLeft, this.ctx);
+                    this.ballLeft = new Ball(this.x, this.y, this.r, this.rBall, this.colorLeft, this.audioService.dingalingLeft, this.ctx);
                     this.polyRight = new Polygon(this.x, this.y, this.r, this.colorRight, this.ctx);
-                    this.ballRight = new Ball(this.x, this.y, this.r, this.rBall, this.colorRight, this.ctx);
+                    this.ballRight = new Ball(this.x, this.y, this.r, this.rBall, this.colorRight, this.audioService.dingalingRight, this.ctx);
+                    this.audioService.setStereo();
                     this.startAnimation();
                 }
             }

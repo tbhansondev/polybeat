@@ -9,14 +9,19 @@ export class Ball extends Shape {
     public animationPath: ICoordinates[];
     private coordIndex = -1;
 
-    constructor(x: number, y: number, r: number, rBall: number, color: string, ctx: CanvasRenderingContext2D) {
+    private dingaling: HTMLAudioElement;
+    private dingalingFrames: number[];
+
+    constructor(x: number, y: number, r: number, rBall: number, color: string, dingaling: HTMLAudioElement, ctx: CanvasRenderingContext2D) {
         super(x, y, r, color, ctx);
         this.rBall = rBall;
+        this.dingaling = dingaling;
     }
 
     draw(): void {
         this.setTransform();
         this.updatePosition();
+        this.playDingaling();
         this.ctx.beginPath();
         this.ctx.arc(this.xBall, this.yBall, this.rBall, 0, Math.PI * 2, true);
         this.ctx.closePath();
@@ -41,14 +46,22 @@ export class Ball extends Shape {
         this.yBall = this.animationPath[0]?.y || 0;
     }
 
+    playDingaling(): void {
+        if (this.dingalingFrames.includes(this.coordIndex)) {
+            this.dingaling.play();
+        }
+    }
+
     createAnimationPath(sidesPath: ICoordinates[], frames: number): void {
         this.animationPath = [];
+        this.dingalingFrames = [];
         this.resetPosition();
         for(let side = 0; side < sidesPath.length; side++) {
             const s1 = side;
             const s2 = side === sidesPath.length - 1 ? 0 : side + 1;
             this.setCoords(sidesPath[s1], sidesPath[s2], sidesPath.length, frames);
         };
+        // console.log(this.dingalingFrames);
     }
 
     private setCoords(p1: ICoordinates, p2: ICoordinates, sides: number, frames: number): void {
@@ -56,6 +69,7 @@ export class Ball extends Shape {
         const xunits = (p2.x - p1.x) / moves;
         const yunits = (p2.y - p1.y) / moves;
         const pathLen = this.animationPath.length;
+        this.dingalingFrames.push(pathLen);
         for (let i = pathLen; i < pathLen + moves; i++){
             const previousPoint = this.animationPath[i - 1] || null;
             let x: number;

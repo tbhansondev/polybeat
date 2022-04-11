@@ -23,11 +23,7 @@
     <input id="select-bpm" type="number" [(ngModel)]="bpm" (input)="startAnimation()">
 </p>
 <p>
-    fps: {{ animationService.currentFps }}
-</p>
-<p>
-    frameCount: {{ animationService.frameCount }}
-</p>
-<p>
-    elapsedSinceStart: {{ animationService.elapsedSinceStart }}
+    <button (click)="audioService.setStereo()">Set Stereo</button>
+    <button (click)="audioService.setMono()">Set Mono</button>
+    <button (click)="audioService.mute()">{{ audioService.muted ? 'Unmute' : 'Mute' }}</button>
 </p>
