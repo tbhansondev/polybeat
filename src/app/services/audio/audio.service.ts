@@ -12,6 +12,11 @@ export class AudioService {
   }
   private _muted: boolean;
 
+  get stereo(): boolean {
+    return this._stereo;
+  }
+  private _stereo: boolean;
+
   private contextLeft = new AudioContext();
   private sourceLeft = this.contextLeft.createMediaElementSource(
     this.dingalingLeft
@@ -32,10 +37,12 @@ export class AudioService {
   }
 
   setStereo(): void {
+    this._stereo = true;
     this.setPanning(this.pan);
   }
 
   setMono(): void {
+    this._stereo = false;
     this.setPanning(0);
   }
 
