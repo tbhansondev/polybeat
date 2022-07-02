@@ -1,3 +1,24 @@
 canvas {
-    border: 1px solid black;
+  border: 1px solid black;
+}
+
+.home {
+  height: 100vh;
+  width: 100vw;
+}
+
+.mat-sidenav-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.mat-toolbar {
+  justify-content: space-between;
+}
+
+.canvas-container {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

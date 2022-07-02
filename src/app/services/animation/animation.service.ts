@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { DEFAULT_FPS } from 'src/app/constants/defaults.constants';
 
 @Injectable({
   providedIn: 'root'
@@ -6,7 +7,7 @@ import { Injectable } from '@angular/core';
 export class AnimationService {
 
     frameCount = 0;
-    fps: number = 144;
+    fps = DEFAULT_FPS;
     currentFps: number;
     elapsedSinceStart: number;
 

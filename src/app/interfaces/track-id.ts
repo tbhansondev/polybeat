@@ -1,4 +1,4 @@
-export interface TrackId {
-    Left: 'left',
-    Right: 'right',
+export interface ITrackId {
+  Left: 'left';
+  Right: 'right';
 }
