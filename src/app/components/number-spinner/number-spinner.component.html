@@ -3,6 +3,7 @@
     <input
       class="input-spinner"
       type="number"
+      [min]="min"
       [style.color]="color"
       [ngModel]="value"
       (ngModelChange)="updateValue($event)"

@@ -6,6 +6,7 @@
     <app-number-spinner
       class="control-spinner"
       [color]="leftColor"
+      [min]="2"
       [(value)]="tracksService.sidesLeft"
     ></app-number-spinner>
     <app-track-suppress-btn
@@ -18,6 +19,7 @@
     <app-number-spinner
       class="control-spinner"
       [color]="rightColor"
+      [min]="2"
       [(value)]="tracksService.sidesRight"
     ></app-number-spinner>
     <app-track-suppress-btn

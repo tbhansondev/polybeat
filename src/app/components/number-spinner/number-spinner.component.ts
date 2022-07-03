@@ -8,6 +8,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class NumberSpinnerComponent implements OnInit {
   @Input() value: number;
   @Input() color: string;
+  @Input() min = 1;
 
   @Output() valueChange = new EventEmitter<number>();
 
@@ -15,13 +16,15 @@ export class NumberSpinnerComponent implements OnInit {
 
   ngOnInit(): void {
     if (!this.value) {
-      this.updateValue(1);
+      this.updateValue(this.min);
     }
   }
 
   updateValue(value: number): void {
-    this.value = value;
-    this.valueChange.emit(this.value);
+    if (value >= this.min) {
+      this.value = value;
+      this.valueChange.emit(this.value);
+    }
   }
 
   spinUp(): void {

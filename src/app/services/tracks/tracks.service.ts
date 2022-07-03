@@ -80,8 +80,10 @@ export class TracksService {
   private updateSides(track: ITrack, sides: number): void {
     const oldSides = track.sides;
     const newSides = sides;
-    track.sides = newSides;
-    this.sidesUpdated$.next({ old: oldSides, new: newSides });
+    if (newSides >= 2) {
+      track.sides = newSides;
+      this.sidesUpdated$.next({ old: oldSides, new: newSides });
+    }
   }
 
   private updateSuppressedTrack(track: ITrack, isSuppressed: boolean): void {
