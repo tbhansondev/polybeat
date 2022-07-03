@@ -65,7 +65,7 @@ export class VisualiserComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.sidesChanged$ = this.tracksService.sidesUpdated$.subscribe((val) => {
+    this.sidesChanged$ = this.tracksService.sidesUpdated$.subscribe(() => {
       this.startAnimation();
     });
   }

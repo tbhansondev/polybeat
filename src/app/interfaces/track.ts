@@ -6,5 +6,6 @@ export interface ITrack {
   polygon: Polygon;
   ball: Ball;
   color: string;
-  colorMuted: string;
+  colorSuppressed: string;
+  isSuppressed: boolean;
 }

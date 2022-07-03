@@ -21,7 +21,6 @@ export class NumberSpinnerComponent implements OnInit {
 
   updateValue(value: number): void {
     this.value = value;
-    console.log(value);
     this.valueChange.emit(this.value);
   }
 

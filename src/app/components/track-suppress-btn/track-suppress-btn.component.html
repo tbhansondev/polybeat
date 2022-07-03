@@ -1,0 +1,6 @@
+<button mat-icon-button [style.color]="color" (click)="onBtnClick()">
+  <ng-container [ngSwitch]="isSuppressed">
+    <mat-icon *ngSwitchCase="true">visibility</mat-icon>
+    <mat-icon *ngSwitchCase="false">visibility_off</mat-icon>
+  </ng-container>
+</button>

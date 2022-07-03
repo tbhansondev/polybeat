@@ -5,9 +5,9 @@ import { Circle } from 'src/app/classes/circle/circle';
 import { Polygon } from 'src/app/classes/polygon/polygon';
 import {
   COLOR_LEFT,
-  COLOR_LEFT_MUTED,
+  COLOR_LEFT_SUPPRESSED,
   COLOR_RIGHT,
-  COLOR_RIGHT_MUTED,
+  COLOR_RIGHT_SUPPRESSED,
 } from 'src/app/constants/colors.constants';
 import {
   DEFAULT_SIDES_LEFT,
@@ -41,6 +41,20 @@ export class TracksService {
     return this.right.sides;
   }
 
+  set suppressedLeft(isSuppressed: boolean) {
+    this.updateSuppressedTrack(this.left, isSuppressed);
+  }
+  get suppressedLeft(): boolean {
+    return this.left.isSuppressed;
+  }
+
+  set suppressedRight(isSuppressed: boolean) {
+    this.updateSuppressedTrack(this.right, isSuppressed);
+  }
+  get suppressedRight(): boolean {
+    return this.right.isSuppressed;
+  }
+
   sidesUpdated$ = new BehaviorSubject<{ old?: number; new?: number }>({});
 
   constructor(
@@ -55,6 +69,14 @@ export class TracksService {
     }
   }
 
+  suppressLeft(): void {
+    this.suppressedLeft = !this.suppressedLeft;
+  }
+
+  suppressRight(): void {
+    this.suppressedRight = !this.suppressedRight;
+  }
+
   private updateSides(track: ITrack, sides: number): void {
     const oldSides = track.sides;
     const newSides = sides;
@@ -62,32 +84,24 @@ export class TracksService {
     this.sidesUpdated$.next({ old: oldSides, new: newSides });
   }
 
-  focusLeft(): void {
-    this.setColorBase(this.right);
-    if (this.left.polygon.color === this.left.color) {
-      this.setColorMuted(this.left);
-    } else {
-      this.setColorBase(this.left);
-    }
-  }
-
-  focusRight(): void {
+  private updateSuppressedTrack(track: ITrack, isSuppressed: boolean): void {
     this.setColorBase(this.left);
-    if (this.right.polygon.color === this.right.color) {
-      this.setColorMuted(this.right);
-    } else {
-      this.setColorBase(this.right);
+    this.setColorBase(this.right);
+    if (isSuppressed) {
+      this.setColorSuppressed(track);
     }
   }
 
   private setColorBase(track: ITrack): void {
     track.polygon.color = track.color;
     track.ball.color = track.color;
+    track.isSuppressed = false;
   }
 
-  private setColorMuted(track: ITrack): void {
-    track.polygon.color = track.colorMuted;
-    track.ball.color = track.colorMuted;
+  private setColorSuppressed(track: ITrack): void {
+    track.polygon.color = track.colorSuppressed;
+    track.ball.color = track.colorSuppressed;
+    track.isSuppressed = true;
   }
 
   private createAll(): void {
@@ -95,13 +109,13 @@ export class TracksService {
     this.left = this.createTrack(
       DEFAULT_SIDES_LEFT,
       COLOR_LEFT,
-      COLOR_LEFT_MUTED,
+      COLOR_LEFT_SUPPRESSED,
       this.audioService.dingalingLeft
     );
     this.right = this.createTrack(
       DEFAULT_SIDES_RIGHT,
       COLOR_RIGHT,
-      COLOR_RIGHT_MUTED,
+      COLOR_RIGHT_SUPPRESSED,
       this.audioService.dingalingRight
     );
   }
@@ -119,13 +133,13 @@ export class TracksService {
   private createTrack(
     sides: number,
     color: string,
-    colorMuted: string,
+    colorSuppressed: string,
     dingaling: HTMLAudioElement
   ): ITrack {
     return {
       sides,
       color,
-      colorMuted,
+      colorSuppressed,
       polygon: new Polygon(
         this.canvasService.canvasCenter,
         this.canvasService.canvasCenter,
@@ -142,6 +156,7 @@ export class TracksService {
         dingaling,
         this.ctx
       ),
+      isSuppressed: false,
     };
   }
 }

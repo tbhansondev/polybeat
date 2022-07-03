@@ -2,14 +2,28 @@
   *ngIf="tracksService && tracksService.left && tracksService.right"
   class="controls"
 >
-  <app-number-spinner
-    class="control"
-    [color]="leftColor"
-    [(value)]="tracksService.sidesLeft"
-  ></app-number-spinner>
-  <app-number-spinner
-    class="control"
-    [color]="rightColor"
-    [(value)]="tracksService.sidesRight"
-  ></app-number-spinner>
+  <div class="control">
+    <app-number-spinner
+      class="control-spinner"
+      [color]="leftColor"
+      [(value)]="tracksService.sidesLeft"
+    ></app-number-spinner>
+    <app-track-suppress-btn
+      [isSuppressed]="tracksService.suppressedLeft"
+      [color]="tracksService.left.color"
+      (btnClick)="tracksService.suppressLeft()"
+    ></app-track-suppress-btn>
+  </div>
+  <div class="control">
+    <app-number-spinner
+      class="control-spinner"
+      [color]="rightColor"
+      [(value)]="tracksService.sidesRight"
+    ></app-number-spinner>
+    <app-track-suppress-btn
+      [isSuppressed]="tracksService.suppressedRight"
+      [color]="tracksService.right.color"
+      (btnClick)="tracksService.suppressRight()"
+    ></app-track-suppress-btn>
+  </div>
 </div>
