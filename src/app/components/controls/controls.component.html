@@ -1,1 +1,15 @@
-
+<div
+  *ngIf="tracksService && tracksService.left && tracksService.right"
+  class="controls"
+>
+  <app-number-spinner
+    class="control"
+    [color]="leftColor"
+    [(value)]="tracksService.sidesLeft"
+  ></app-number-spinner>
+  <app-number-spinner
+    class="control"
+    [color]="rightColor"
+    [(value)]="tracksService.sidesRight"
+  ></app-number-spinner>
+</div>

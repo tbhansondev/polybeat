@@ -1,0 +1,39 @@
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.input-spinner-container {
+  flex-grow: 1;
+  display: block;
+  position: relative;
+}
+
+.input-spinner {
+  background-color: rgba(0, 0, 0, 0);
+  color: white;
+  border: none;
+  box-shadow: none;
+  font-size: 4rem;
+  text-align: end;
+  width: 100%;
+}
+
+.input-spinner-buttons {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}

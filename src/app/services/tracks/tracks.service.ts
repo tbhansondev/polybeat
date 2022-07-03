@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { Ball } from 'src/app/classes/ball/ball';
 import { Circle } from 'src/app/classes/circle/circle';
 import { Polygon } from 'src/app/classes/polygon/polygon';
@@ -26,6 +27,22 @@ export class TracksService {
   right: ITrack;
   circle: Circle;
 
+  set sidesLeft(sides: number) {
+    this.updateSides(this.left, sides);
+  }
+  get sidesLeft(): number {
+    return this.left.sides;
+  }
+
+  set sidesRight(sides: number) {
+    this.updateSides(this.right, sides);
+  }
+  get sidesRight(): number {
+    return this.right.sides;
+  }
+
+  sidesUpdated$ = new BehaviorSubject<{ old?: number; new?: number }>({});
+
   constructor(
     private audioService: AudioService,
     private canvasService: CanvasService
@@ -36,6 +53,13 @@ export class TracksService {
       this.ctx = ctx;
       this.createAll();
     }
+  }
+
+  private updateSides(track: ITrack, sides: number): void {
+    const oldSides = track.sides;
+    const newSides = sides;
+    track.sides = newSides;
+    this.sidesUpdated$.next({ old: oldSides, new: newSides });
   }
 
   focusLeft(): void {

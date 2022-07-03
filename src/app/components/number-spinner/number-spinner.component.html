@@ -1,1 +1,19 @@
-<p>number-spinner works!</p>
+<div class="input-container">
+  <div class="input-spinner-container">
+    <input
+      class="input-spinner"
+      type="number"
+      [style.color]="color"
+      [ngModel]="value"
+      (ngModelChange)="updateValue($event)"
+    />
+  </div>
+  <div class="input-spinner-buttons">
+    <button mat-icon-button aria-label="Increase value" (click)="spinUp()">
+      <mat-icon [style.color]="color">arrow_drop_up</mat-icon>
+    </button>
+    <button mat-icon-button aria-label="Decrease value" (click)="spinDown()">
+      <mat-icon [style.color]="color">arrow_drop_down</mat-icon>
+    </button>
+  </div>
+</div>

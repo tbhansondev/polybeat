@@ -3,8 +3,11 @@ import {
   Component,
   ElementRef,
   Input,
+  OnDestroy,
+  OnInit,
   ViewChild,
 } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { ITrack } from 'src/app/interfaces/track';
 import { AnimationService } from 'src/app/services/animation/animation.service';
 import { AudioService } from 'src/app/services/audio/audio.service';
@@ -17,7 +20,7 @@ import { TracksService } from 'src/app/services/tracks/tracks.service';
   templateUrl: './visualiser.component.html',
   styleUrls: ['./visualiser.component.scss'],
 })
-export class VisualiserComponent implements AfterViewInit {
+export class VisualiserComponent implements AfterViewInit, OnInit, OnDestroy {
   @Input() bpm: number = 90;
 
   @ViewChild('canvas', { static: false })
@@ -25,6 +28,8 @@ export class VisualiserComponent implements AfterViewInit {
 
   canvas: HTMLCanvasElement;
   context: CanvasRenderingContext2D | null;
+
+  sidesChanged$: Subscription;
 
   private framesPerBar: number;
 
@@ -57,6 +62,16 @@ export class VisualiserComponent implements AfterViewInit {
         console.warn('browser does not support canvas');
       }
     }
+  }
+
+  ngOnInit(): void {
+    this.sidesChanged$ = this.tracksService.sidesUpdated$.subscribe((val) => {
+      this.startAnimation();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.sidesChanged$.unsubscribe();
   }
 
   private startAnimation(): void {
