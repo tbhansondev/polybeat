@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 
 @Component({
@@ -14,6 +22,8 @@ export class NumberSpinnerComponent implements OnInit {
   @Input() customIncrement: number;
 
   @Output() valueChange = new EventEmitter<number>();
+
+  @ViewChild('input', { read: ElementRef }) inputRef: ElementRef;
 
   valueUpdate$ = new Subject<number>();
 
@@ -31,7 +41,7 @@ export class NumberSpinnerComponent implements OnInit {
   }
 
   updateValue(value: number): void {
-    if (value >= this.min) {
+    if (this.isValid(value)) {
       this.value = value;
       this.valueChange.emit(this.value);
     }
@@ -43,5 +53,16 @@ export class NumberSpinnerComponent implements OnInit {
 
   spinDown(increment: number): void {
     this.updateValue(this.value - increment);
+  }
+
+  onBlur(): void {
+    const el = this.inputRef.nativeElement;
+    if (!this.isValid(el.value)) {
+      el.value = this.value;
+    }
+  }
+
+  isValid(value: number): boolean {
+    return value >= this.min;
   }
 }

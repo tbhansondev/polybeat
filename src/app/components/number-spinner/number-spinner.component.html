@@ -4,12 +4,14 @@
   }}</mat-icon>
   <div class="input-spinner-container">
     <input
+      #input
       class="input-spinner"
       type="number"
       [min]="min"
       [style.color]="color"
       [ngModel]="value"
-      (ngModelChange)="this.valueUpdate$.next($event)"
+      (ngModelChange)="valueUpdate$.next($event)"
+      (blur)="onBlur()"
     />
   </div>
   <div class="input-spinner-buttons">
