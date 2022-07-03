@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-number-spinner',
@@ -8,9 +9,13 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class NumberSpinnerComponent implements OnInit {
   @Input() value: number;
   @Input() color: string;
+  @Input() icon: string;
   @Input() min = 1;
+  @Input() customIncrement: number;
 
   @Output() valueChange = new EventEmitter<number>();
+
+  valueUpdate$ = new Subject<number>();
 
   constructor() {}
 
@@ -18,6 +23,11 @@ export class NumberSpinnerComponent implements OnInit {
     if (!this.value) {
       this.updateValue(this.min);
     }
+    this.valueUpdate$
+      .pipe(debounceTime(400), distinctUntilChanged())
+      .subscribe((value) => {
+        this.updateValue(value);
+      });
   }
 
   updateValue(value: number): void {
@@ -27,11 +37,11 @@ export class NumberSpinnerComponent implements OnInit {
     }
   }
 
-  spinUp(): void {
-    this.updateValue(this.value + 1);
+  spinUp(increment: number): void {
+    this.updateValue(this.value + increment);
   }
 
-  spinDown(): void {
-    this.updateValue(this.value - 1);
+  spinDown(increment: number): void {
+    this.updateValue(this.value - increment);
   }
 }

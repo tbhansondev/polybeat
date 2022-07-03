@@ -2,7 +2,6 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  Input,
   OnDestroy,
   OnInit,
   ViewChild,
@@ -11,6 +10,7 @@ import { Subscription } from 'rxjs';
 import { ITrack } from 'src/app/interfaces/track';
 import { AnimationService } from 'src/app/services/animation/animation.service';
 import { AudioService } from 'src/app/services/audio/audio.service';
+import { BpmService } from 'src/app/services/bpm/bpm.service';
 import { CanvasService } from 'src/app/services/canvas/canvas.service';
 import { MathService } from 'src/app/services/math/math.service';
 import { TracksService } from 'src/app/services/tracks/tracks.service';
@@ -21,14 +21,13 @@ import { TracksService } from 'src/app/services/tracks/tracks.service';
   styleUrls: ['./visualiser.component.scss'],
 })
 export class VisualiserComponent implements AfterViewInit, OnInit, OnDestroy {
-  @Input() bpm: number = 90;
-
   @ViewChild('canvas', { static: false })
   canvasElement: ElementRef<HTMLCanvasElement>;
 
   canvas: HTMLCanvasElement;
   context: CanvasRenderingContext2D | null;
 
+  bpmChanged$: Subscription;
   sidesChanged$: Subscription;
 
   private framesPerBar: number;
@@ -38,6 +37,7 @@ export class VisualiserComponent implements AfterViewInit, OnInit, OnDestroy {
   constructor(
     private animationService: AnimationService,
     private audioService: AudioService,
+    private bpmService: BpmService,
     private mathService: MathService,
     private tracksService: TracksService,
     public canvasService: CanvasService
@@ -65,17 +65,21 @@ export class VisualiserComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.bpmChanged$ = this.bpmService.bpmUpdated$.subscribe(() => {
+      this.startAnimation();
+    });
     this.sidesChanged$ = this.tracksService.sidesUpdated$.subscribe(() => {
       this.startAnimation();
     });
   }
 
   ngOnDestroy(): void {
+    this.bpmChanged$.unsubscribe();
     this.sidesChanged$.unsubscribe();
   }
 
   private startAnimation(): void {
-    if (this.bpm > 0) {
+    if (this.bpmService.bpm > 0) {
       this.animationService.stop();
       this.setFramesPerBar();
       this.initTracks();
@@ -88,7 +92,7 @@ export class VisualiserComponent implements AfterViewInit, OnInit, OnDestroy {
     this.framesPerBar = this.mathService.closestCommonMultipleToTarget(
       this.tracksService.left.sides,
       this.tracksService.right.sides,
-      Math.round(fpm / (this.bpm / this.QUARTER_NOTES_PER_BAR))
+      Math.round(fpm / (this.bpmService.bpm / this.QUARTER_NOTES_PER_BAR))
     );
   }
 

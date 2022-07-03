@@ -18,6 +18,14 @@
   <div class="control">
     <app-number-spinner
       class="control-spinner"
+      icon="music_note"
+      [customIncrement]="10"
+      [(value)]="bpmService.bpm"
+    ></app-number-spinner>
+  </div>
+  <div class="control">
+    <app-number-spinner
+      class="control-spinner"
       [color]="rightColor"
       [min]="2"
       [(value)]="tracksService.sidesRight"

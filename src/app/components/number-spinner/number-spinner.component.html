@@ -1,4 +1,7 @@
 <div class="input-container">
+  <mat-icon *ngIf="icon" class="prefix-icon" [color]="color">{{
+    icon
+  }}</mat-icon>
   <div class="input-spinner-container">
     <input
       class="input-spinner"
@@ -6,15 +9,44 @@
       [min]="min"
       [style.color]="color"
       [ngModel]="value"
-      (ngModelChange)="updateValue($event)"
+      (ngModelChange)="this.valueUpdate$.next($event)"
     />
   </div>
   <div class="input-spinner-buttons">
-    <button mat-icon-button aria-label="Increase value" (click)="spinUp()">
-      <mat-icon [style.color]="color">arrow_drop_up</mat-icon>
-    </button>
-    <button mat-icon-button aria-label="Decrease value" (click)="spinDown()">
-      <mat-icon [style.color]="color">arrow_drop_down</mat-icon>
-    </button>
+    <ng-container
+      *ngTemplateOutlet="spinUpBtn; context: { increment: 1 }"
+    ></ng-container>
+    <ng-container
+      *ngTemplateOutlet="spinDownBtn; context: { increment: 1 }"
+    ></ng-container>
+  </div>
+  <div *ngIf="customIncrement" class="input-spinner-buttons">
+    <ng-container
+      *ngTemplateOutlet="spinUpBtn; context: { increment: customIncrement }"
+    ></ng-container>
+    <ng-container
+      *ngTemplateOutlet="spinDownBtn; context: { increment: customIncrement }"
+    ></ng-container>
   </div>
 </div>
+
+<ng-template #spinUpBtn let-increment="increment">
+  <button
+    mat-icon-button
+    aria-label="Increase value"
+    (click)="spinUp(increment)"
+  >
+    <span [style.color]="color">+{{ increment }}</span>
+  </button>
+</ng-template>
+
+<ng-template #spinDownBtn let-increment="increment">
+  <button
+    mat-icon-button
+    aria-label="Decrease value"
+    [disabled]="value - increment < min"
+    (click)="spinDown(increment)"
+  >
+    <span [style.color]="color">-{{ increment }}</span>
+  </button>
+</ng-template>
