@@ -2,38 +2,46 @@
   *ngIf="tracksService && tracksService.left && tracksService.right"
   class="controls"
 >
-  <div class="control">
-    <app-number-spinner
-      class="control-spinner"
-      [color]="leftColor"
-      [min]="2"
-      [(value)]="tracksService.sidesLeft"
-    ></app-number-spinner>
-    <app-track-suppress-btn
-      [isSuppressed]="tracksService.suppressedLeft"
-      [color]="tracksService.left.color"
-      (btnClick)="tracksService.suppressLeft()"
-    ></app-track-suppress-btn>
-  </div>
-  <div class="control">
-    <app-number-spinner
-      class="control-spinner"
-      icon="music_note"
-      [customIncrement]="10"
-      [(value)]="bpmService.bpm"
-    ></app-number-spinner>
-  </div>
-  <div class="control">
-    <app-number-spinner
-      class="control-spinner"
-      [color]="rightColor"
-      [min]="2"
-      [(value)]="tracksService.sidesRight"
-    ></app-number-spinner>
-    <app-track-suppress-btn
-      [isSuppressed]="tracksService.suppressedRight"
-      [color]="tracksService.right.color"
-      (btnClick)="tracksService.suppressRight()"
-    ></app-track-suppress-btn>
-  </div>
+  <mat-card>
+    <div class="control">
+      <app-number-spinner
+        class="control-spinner"
+        [color]="leftColor"
+        [min]="2"
+        [(value)]="tracksService.sidesLeft"
+      ></app-number-spinner>
+      <mat-divider [vertical]="true"></mat-divider>
+      <app-track-suppress-btn
+        [isSuppressed]="tracksService.suppressedLeft"
+        [color]="tracksService.left.color"
+        (btnClick)="tracksService.suppressLeft()"
+      ></app-track-suppress-btn>
+    </div>
+  </mat-card>
+  <mat-card>
+    <div class="control">
+      <app-number-spinner
+        class="control-spinner"
+        icon="music_note"
+        [customIncrement]="10"
+        [(value)]="bpmService.bpm"
+      ></app-number-spinner>
+    </div>
+  </mat-card>
+  <mat-card>
+    <div class="control">
+      <app-number-spinner
+        class="control-spinner"
+        [color]="rightColor"
+        [min]="2"
+        [(value)]="tracksService.sidesRight"
+      ></app-number-spinner>
+      <mat-divider [vertical]="true"></mat-divider>
+      <app-track-suppress-btn
+        [isSuppressed]="tracksService.suppressedRight"
+        [color]="tracksService.right.color"
+        (btnClick)="tracksService.suppressRight()"
+      ></app-track-suppress-btn>
+    </div>
+  </mat-card>
 </div>

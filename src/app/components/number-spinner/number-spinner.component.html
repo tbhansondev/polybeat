@@ -20,14 +20,17 @@
       *ngTemplateOutlet="spinDownBtn; context: { increment: 1 }"
     ></ng-container>
   </div>
-  <div *ngIf="customIncrement" class="input-spinner-buttons">
-    <ng-container
-      *ngTemplateOutlet="spinUpBtn; context: { increment: customIncrement }"
-    ></ng-container>
-    <ng-container
-      *ngTemplateOutlet="spinDownBtn; context: { increment: customIncrement }"
-    ></ng-container>
-  </div>
+  <ng-container *ngIf="customIncrement">
+    <mat-divider [vertical]="true"></mat-divider>
+    <div class="input-spinner-buttons">
+      <ng-container
+        *ngTemplateOutlet="spinUpBtn; context: { increment: customIncrement }"
+      ></ng-container>
+      <ng-container
+        *ngTemplateOutlet="spinDownBtn; context: { increment: customIncrement }"
+      ></ng-container>
+    </div>
+  </ng-container>
 </div>
 
 <ng-template #spinUpBtn let-increment="increment">
