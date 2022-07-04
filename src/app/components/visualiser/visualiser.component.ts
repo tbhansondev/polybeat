@@ -3,7 +3,6 @@ import {
   Component,
   ElementRef,
   OnDestroy,
-  OnInit,
   ViewChild,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
@@ -20,7 +19,7 @@ import { TracksService } from 'src/app/services/tracks/tracks.service';
   templateUrl: './visualiser.component.html',
   styleUrls: ['./visualiser.component.scss'],
 })
-export class VisualiserComponent implements AfterViewInit, OnInit, OnDestroy {
+export class VisualiserComponent implements AfterViewInit, OnDestroy {
   @ViewChild('canvas', { static: false })
   canvasElement: ElementRef<HTMLCanvasElement>;
 
@@ -57,20 +56,20 @@ export class VisualiserComponent implements AfterViewInit, OnInit, OnDestroy {
           // ----- REMOVE
 
           this.startAnimation();
+
+          this.bpmChanged$ = this.bpmService.bpmUpdated$.subscribe(() => {
+            this.startAnimation();
+          });
+          this.sidesChanged$ = this.tracksService.sidesUpdated$.subscribe(
+            () => {
+              this.startAnimation();
+            }
+          );
         }
       } else {
         console.warn('browser does not support canvas');
       }
     }
-  }
-
-  ngOnInit(): void {
-    this.bpmChanged$ = this.bpmService.bpmUpdated$.subscribe(() => {
-      this.startAnimation();
-    });
-    this.sidesChanged$ = this.tracksService.sidesUpdated$.subscribe(() => {
-      this.startAnimation();
-    });
   }
 
   ngOnDestroy(): void {

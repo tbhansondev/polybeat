@@ -1,79 +1,16 @@
 <mat-sidenav-container class="home" (click)="audioService.resumeContext()">
-  <mat-sidenav role="region" position="end" mode="side" [opened]="sidenavOpen">
-    sidenav content
+  <mat-sidenav
+    role="region"
+    position="end"
+    mode="over"
+    [opened]="sideNavService.isOpen"
+    (closed)="sideNavService.close()"
+  >
+    <app-sidenav></app-sidenav>
   </mat-sidenav>
   <mat-sidenav-content role="main">
-    <mat-toolbar>
-      <h1>Polybe.at</h1>
-      <div>
-        <button
-          mat-icon-button
-          aria-label="Toggle mono / stereo"
-          (click)="toggleStereo()"
-        >
-          <ng-container [ngSwitch]="audioService.stereo">
-            <mat-icon *ngSwitchCase="true">graphic_eq</mat-icon>
-            <mat-icon *ngSwitchCase="false">remove</mat-icon>
-          </ng-container>
-        </button>
-        <button
-          mat-icon-button
-          aria-label="Toggle muted"
-          (click)="audioService.mute()"
-        >
-          <ng-container [ngSwitch]="audioService.muted">
-            <mat-icon *ngSwitchCase="true">volume_off</mat-icon>
-            <mat-icon *ngSwitchCase="false">volume_up</mat-icon>
-          </ng-container>
-        </button>
-        <button
-          mat-icon-button
-          aria-label="Burger Menu"
-          (click)="openSidenav()"
-        >
-          <mat-icon>menu</mat-icon>
-        </button>
-      </div>
-    </mat-toolbar>
+    <app-toolbar></app-toolbar>
     <app-visualiser class="visualiser"></app-visualiser>
     <app-controls class="controls"></app-controls>
-    <!-- <div>
-      <p>
-        <label for="number-of-sides-left"> Number of sides (left) </label>
-        <input
-          id="number-of-sides-left"
-          type="number"
-          [(ngModel)]="sidesLeft"
-          (input)="startAnimation()"
-        />
-        <button (click)="tracksService.focusLeft()">Focus left</button>
-      </p>
-      <p>
-        <label for="number-of-sides-right"> Number of sides (right) </label>
-        <input
-          id="number-of-sides-right"
-          type="number"
-          [(ngModel)]="sidesRight"
-          (input)="startAnimation()"
-        />
-        <button (click)="tracksService.focusRight()">Focus right</button>
-      </p>
-      <p>
-        <label for="select-bpm"> BPM </label>
-        <input
-          id="select-bpm"
-          type="number"
-          [(ngModel)]="bpm"
-          (input)="startAnimation()"
-        />
-      </p>
-      <p>
-        <button (click)="audioService.setStereo()">Set Stereo</button>
-        <button (click)="audioService.setMono()">Set Mono</button>
-        <button (click)="audioService.mute()">
-          {{ audioService.muted ? "Unmute" : "Mute" }}
-        </button>
-      </p>
-    </div> -->
   </mat-sidenav-content>
 </mat-sidenav-container>

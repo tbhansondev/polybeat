@@ -36,6 +36,14 @@ export class AudioService {
     this.contextRight.resume();
   }
 
+  toggleStereo(): void {
+    if (this.stereo) {
+      this.setMono();
+    } else {
+      this.setStereo();
+    }
+  }
+
   setStereo(): void {
     this._stereo = true;
     this.setPanning(this.pan);

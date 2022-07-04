@@ -1,0 +1,30 @@
+.sidenav {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.sidenav-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
+
+.heart {
+  color: #e74c3c;
+}
+
+a {
+  color: #3498db;
+}
+
+.divider {
+  display: block;
+  width: 100%;
+}
+
+.mat-divider {
+  width: 100%;
+}

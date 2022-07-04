@@ -1,0 +1,32 @@
+<mat-toolbar>
+  <h1>Polybe.at</h1>
+  <div>
+    <button
+      mat-icon-button
+      aria-label="Toggle mono / stereo"
+      (click)="audioService.toggleStereo()"
+    >
+      <ng-container [ngSwitch]="audioService?.stereo">
+        <mat-icon *ngSwitchCase="true">graphic_eq</mat-icon>
+        <mat-icon *ngSwitchCase="false">remove</mat-icon>
+      </ng-container>
+    </button>
+    <button
+      mat-icon-button
+      aria-label="Toggle muted"
+      (click)="audioService.mute()"
+    >
+      <ng-container [ngSwitch]="audioService?.muted">
+        <mat-icon *ngSwitchCase="true">volume_off</mat-icon>
+        <mat-icon *ngSwitchCase="false">volume_up</mat-icon>
+      </ng-container>
+    </button>
+    <button
+      mat-icon-button
+      aria-label="Burger Menu"
+      (click)="sideNavService.toggle()"
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>

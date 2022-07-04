@@ -1,4 +1,4 @@
-/* You can add global styles to this file, and also import other style files */
+@use "@angular/material" as mat;
 
 html,
 body {
@@ -6,7 +6,22 @@ body {
 }
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: "Comfortaa", "Helvetica Neue", sans-serif;
+}
+
+.mat-typography {
+  &,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  div,
+  span,
+  input {
+    font-family: "Comfortaa", "Helvetica Neue", sans-serif;
+  }
 }
 
 .mat-divider.mat-divider-vertical {
